@@ -4,7 +4,6 @@ import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.css.SimpleStyleableFloatProperty;
 
 import java.util.jar.Attributes;
 
@@ -18,6 +17,7 @@ public class bill {
     FloatProperty lessons_4 = new SimpleFloatProperty( 0 ) ; // предмет 4
     FloatProperty lessons_5 = new SimpleFloatProperty( 0 ) ; // предмет 5
     FloatProperty lessons_6 = new SimpleFloatProperty( 0 ) ; // предмет 6
+    FloatProperty ball = new SimpleFloatProperty( 0 ) ; //
     FloatProperty rating = new SimpleFloatProperty( 0 ) ; // рейтинг
 
     //-------------------------------------------------------------------------------------конструтор -----------------------------------------------
@@ -38,9 +38,10 @@ public class bill {
         this.lessons_4 = new SimpleFloatProperty(lessons_4); // добавить предмет в класс
         this.lessons_5 = new SimpleFloatProperty(lessons_5); // добавить предмет в класс
         this.lessons_6 = new SimpleFloatProperty(lessons_6); // добавить предмет в класс
-        this.rating = new SimpleFloatProperty(
+        this.ball = new SimpleFloatProperty(
                 (lessons_1+lessons_2+lessons_3+lessons_4+lessons_5+lessons_6)/6
         );
+        this.rating  = new SimpleFloatProperty(0); // добавить предмет в класс
     }
 
     // --------------------------------------------------------------------------------- обработка событый -------------------------------------------------------
@@ -80,7 +81,16 @@ public class bill {
         return lessons_6;
     }
     //------------------------------  рейтинг
-    public FloatProperty rating () { // вернуть имя (ещё не использовали, но вдруг пригодиться)
+    public FloatProperty getBall () { // вернуть имя (ещё не использовали, но вдруг пригодиться)
+        return ball;
+    }
+    public FloatProperty getRating () { // вернуть имя (ещё не использовали, но вдруг пригодиться)
         return rating;
+    }
+    public void setRating (float rating) { // вернуть имя (ещё не использовали, но вдруг пригодиться)
+        this.rating=new SimpleFloatProperty(rating);
+    }
+    public void setBall(float ball) { // вернуть имя (ещё не использовали, но вдруг пригодиться)
+        this.ball=new SimpleFloatProperty(ball);
     }
 }

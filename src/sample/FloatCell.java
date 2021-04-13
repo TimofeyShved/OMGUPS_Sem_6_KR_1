@@ -4,6 +4,10 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableCell;
 import sample.FloatField;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class FloatCell extends TableCell<bill,Number> { // наследуем таблицу переменная / число
         FloatField number; // наше поле для числа
         ObservableList<bill> billList;   // список переменных
@@ -53,10 +57,43 @@ public class FloatCell extends TableCell<bill,Number> { // наследуем т
                         case  ("lessons_4"): newExpense = new bill(myBill.getName(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), myBill.lessons_3.getValue(),newCost,myBill.lessons_5.getValue(),myBill.lessons_6.getValue());break; // подгружаем таблицу
                         case  ("lessons_5"): newExpense = new bill(myBill.getName(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), myBill.lessons_3.getValue(),myBill.lessons_4.getValue(),newCost,myBill.lessons_6.getValue());break; // подгружаем таблицу
                         case  ("lessons_6"): newExpense = new bill(myBill.getName(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), myBill.lessons_3.getValue(),myBill.lessons_4.getValue(),myBill.lessons_5.getValue(),newCost);break; // подгружаем таблицу
-                        default: newExpense=newExpense = new bill(myBill.getName(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), myBill.lessons_3.getValue(),myBill.lessons_4.getValue(),myBill.lessons_5.getValue(),myBill.lessons_6.getValue());break; // подгружаем таблицу
+                        default: newExpense = new bill(myBill.getName(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), myBill.lessons_3.getValue(),myBill.lessons_4.getValue(),myBill.lessons_5.getValue(),myBill.lessons_6.getValue());break; // подгружаем таблицу
                 }
                 billList.set(index, newExpense); // меняем значение
                 setGraphic(null); //не отображаем число
+
+                //---------------------------------------------------------------------------------------------- sorted ------------------------------------------
+                List<Float> ballList = new ArrayList<Float>(); // список баллов
+                for (bill b: billList){
+                        ballList.add(b.getBall().getValue());
+                }
+                //Collections.sort(ballList, Collections.reverseOrder());
+                this.sort(ballList);
+                for (int j = 0; j < billList.size(); j++){
+                        for(int i = 0; i < ballList.size(); i++){
+                                float f1=ballList.get(i);
+                                float f2=billList.get(j).getBall().getValue();
+                                if(f1==f2){
+                                        bill b = billList.get(j);
+                                        b.setRating(i+1);
+                                        billList.set(j, b);
+                                }
+                        }
+                }
+        }
+
+        public static List<Float> sort(List<Float> array) {
+                for (int i = 0; i < array.size(); i++) {
+                        for (int j = 0; j < array.size(); j++) {
+                                if (array.get(j) < array.get(i)) {
+                                        float aj = array.get(j);
+                                        float ai = array.get(i);
+                                        array.set(j, ai);
+                                        array.set(i, aj);
+                                }
+                        }
+                }
+                return array;
         }
 
         @Override

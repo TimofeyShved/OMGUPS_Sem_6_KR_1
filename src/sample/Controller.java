@@ -26,6 +26,7 @@ public class Controller {
     @FXML TableColumn<bill, Number> lessons_4;
     @FXML TableColumn<bill, Number> lessons_5;
     @FXML TableColumn<bill, Number> lessons_6;
+    @FXML TableColumn<bill, Number> ball;
     @FXML TableColumn<bill, Number> rating;
     @FXML ComboBox groupColumn;
 
@@ -37,12 +38,12 @@ public class Controller {
 
     // ----------------------------------------- тестовая инициализация---------------------------------------------------------------
     public void testInit() {
-        billList.add(new bill ( "Иванов Иван Иванович", new Float(30),new Float(30),new Float(30),new Float(30),new Float(30),new Float(30)));
-        billList.add(new bill ( "Иванов Сергей Иванович", new Float(30),new Float(30),new Float(30),new Float(30),new Float(30),new Float(30)));
-        billList.add(new bill ( "Иванов Александр Иванович", new Float(30),new Float(30),new Float(30),new Float(30),new Float(30),new Float(30)));
-        billList.add(new bill ( "Сидоров Сергей Иванович", new Float(30),new Float(30),new Float(30),new Float(30),new Float(30),new Float(30)));
-        billList.add(new bill ( "Сидоров Иван Иванович", new Float(30),new Float(30),new Float(30),new Float(30),new Float(30),new Float(30)));
-        billList.add(new bill ( "Сидоров Александр Иванович", new Float(30),new Float(30),new Float(30),new Float(30),new Float(30),new Float(30)));
+        billList.add(new bill ( "Иванов Иван Иванович", new Float(0),new Float(0),new Float(0),new Float(0),new Float(0),new Float(0)));
+        billList.add(new bill ( "Иванов Сергей Иванович", new Float(0),new Float(0),new Float(0),new Float(0),new Float(0),new Float(0)));
+        billList.add(new bill ( "Иванов Александр Иванович", new Float(0),new Float(0),new Float(0),new Float(0),new Float(0),new Float(0)));
+        billList.add(new bill ( "Сидоров Сергей Иванович", new Float(0),new Float(0),new Float(0),new Float(0),new Float(0),new Float(0)));
+        billList.add(new bill ( "Сидоров Иван Иванович", new Float(0),new Float(0),new Float(0),new Float(0),new Float(0),new Float(0)));
+        billList.add(new bill ( "Сидоров Александр Иванович", new Float(0),new Float(0),new Float(0),new Float(0),new Float(0),new Float(0)));
         //ObservableValue<Number> x; // данная строчка не имеет смысла, но может пригодится если переделать на возвращаемую функцию. Но у нас void =D
     }
 
@@ -69,6 +70,10 @@ public class Controller {
         lessons_5.setCellValueFactory(cellData -> cellData.getValue().getLessons_5());
         // добавление строки в столбик (предмет 6)
         lessons_6.setCellValueFactory(cellData -> cellData.getValue().getLessons_6());
+        // добавление строки в столбик (предмет 6)
+        ball.setCellValueFactory(cellData -> cellData.getValue().getBall());
+        // добавление строки в столбик (предмет 6)
+        rating.setCellValueFactory(cellData -> cellData.getValue().getRating());
 
         // запрос на изменение данных
         lessons_1.setCellFactory(cellData -> new FloatCell (billList, cellData.getId()));
@@ -77,17 +82,5 @@ public class Controller {
         lessons_4.setCellFactory(cellData -> new FloatCell (billList, cellData.getId()));
         lessons_5.setCellFactory(cellData -> new FloatCell (billList, cellData.getId()));
         lessons_6.setCellFactory(cellData -> new FloatCell (billList, cellData.getId()));
-
-        // подсчёт затрат
-        table.setOnMouseClicked(event -> itogoUpdate());
-    }
-
-    //--------------------------------------обновление результата! \(＾∀＾)/--------------------------------------------
-    private void itogoUpdate(){
-        FloatProperty sumCost= new SimpleFloatProperty(0f);
-        for (bill e: billList){ // перебор затрат
-            //sumCost.setValue(sumCost.getValue()+e.cost.getValue());
-        }
-        //sum.setText(" Итого: "+sumCost.getValue()+" руб. "); // вывод затрат
     }
 }

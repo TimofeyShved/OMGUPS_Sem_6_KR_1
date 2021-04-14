@@ -12,6 +12,11 @@ import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.JAXBException;
+import java.io.File;
+
 public class Controller {
 
     // -------------------------------------------------------------------- переменные ---------------------------------------------
@@ -59,17 +64,17 @@ public class Controller {
         nameColumn.setCellFactory(TextFieldTableCell.<bill> forTableColumn());
 
         // добавление строки в столбик (предмет 1)
-        lessons_1.setCellValueFactory(cellData -> cellData.getValue().getLessons_1());
+        lessons_1.setCellValueFactory(cellData -> cellData.getValue().Lessons_1());
         // добавление строки в столбик (предмет 2)
-        lessons_2.setCellValueFactory(cellData -> cellData.getValue().getLessons_2());
+        lessons_2.setCellValueFactory(cellData -> cellData.getValue().Lessons_2());
         // добавление строки в столбик (предмет 3)
-        lessons_3.setCellValueFactory(cellData -> cellData.getValue().getLessons_3());
+        lessons_3.setCellValueFactory(cellData -> cellData.getValue().Lessons_3());
         // добавление строки в столбик (предмет 4)
-        lessons_4.setCellValueFactory(cellData -> cellData.getValue().getLessons_4());
+        lessons_4.setCellValueFactory(cellData -> cellData.getValue().Lessons_4());
         // добавление строки в столбик (предмет 5)
-        lessons_5.setCellValueFactory(cellData -> cellData.getValue().getLessons_5());
+        lessons_5.setCellValueFactory(cellData -> cellData.getValue().Lessons_5());
         // добавление строки в столбик (предмет 6)
-        lessons_6.setCellValueFactory(cellData -> cellData.getValue().getLessons_6());
+        lessons_6.setCellValueFactory(cellData -> cellData.getValue().Lessons_6());
         // добавление строки в столбик (предмет 6)
         ball.setCellValueFactory(cellData -> cellData.getValue().getBall());
         // добавление строки в столбик (предмет 6)
@@ -82,5 +87,51 @@ public class Controller {
         lessons_4.setCellFactory(cellData -> new FloatCell (billList, cellData.getId()));
         lessons_5.setCellFactory(cellData -> new FloatCell (billList, cellData.getId()));
         lessons_6.setCellFactory(cellData -> new FloatCell (billList, cellData.getId()));
+
+        // подсчёт затрат
+        table.setOnMouseClicked(event -> {
+            try {
+                itogoUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * Сохраняет текущую информацию об адресатах в указанном файле.
+     *
+     * @param(file)
+     */
+    //--------------------------------------обновление результата! \(＾∀＾)/--------------------------------------------
+    private void itogoUpdate() throws Exception{
+        File file = new File("101.xml");
+        //try {
+            JAXBContext context = JAXBContext.newInstance(bill.class);
+            Marshaller marshaller = context.createMarshaller();
+
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            // Обёртываем наши данные об адресатах.
+            bill wrapper = new bill ( "Иванов Иван Иванович", new Float(0),new Float(0),new Float(0),new Float(0),new Float(0),new Float(0));
+            //wrapper.setPersons(personData);
+
+            // Маршаллируем и сохраняем XML в файл.
+            marshaller.marshal(wrapper, file);
+            //marshaller.marshal(wrapper, System.out);
+
+            // Сохраняем путь к файлу в реестре.
+            //setPersonFilePath(file);
+        /*
+        } catch (Exception e) { // catches ANY exception
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Could not save data");
+            alert.setContentText("Could not save data to file:\n" + file.getPath());
+
+            alert.showAndWait();
+        }
+
+         */
     }
 }

@@ -13,12 +13,12 @@
       <TableView fx:id="table" prefHeight="373.0" prefWidth="786.0" BorderPane.alignment="CENTER">
         <columns>
             <TableColumn fx:id="nameColumn" prefWidth="200" text="ФИО" />
-            <TableColumn fx:id="lessons_1" prefWidth="100" text="Предмет 1" />
-            <TableColumn fx:id="lessons_2" prefWidth="100" text="Предмет 2" />
-            <TableColumn fx:id="lessons_3" prefWidth="100" text="Предмет 3" />
-            <TableColumn fx:id="lessons_4" prefWidth="100" text="Предмет 4" />
-            <TableColumn fx:id="lessons_5" prefWidth="100" text="Предмет 5" />
-            <TableColumn fx:id="lessons_6" prefWidth="100" text="Предмет 6" />
+            <TableColumn fx:id="lessons_1" prefWidth="100" text="Физика" />
+            <TableColumn fx:id="lessons_2" prefWidth="100" text="Химия" />
+            <TableColumn fx:id="lessons_3" prefWidth="100" text="Ин. яз." />
+            <TableColumn fx:id="lessons_4" prefWidth="100" text="Русский" />
+            <TableColumn fx:id="lessons_5" prefWidth="100" text="Математика" />
+            <TableColumn fx:id="lessons_6" prefWidth="100" text="Право" />
             <TableColumn fx:id="ball" prefWidth="150" text="Средний балл" />
             <TableColumn fx:id="rating" prefWidth="100" text="Рейтинг" />
         </columns>

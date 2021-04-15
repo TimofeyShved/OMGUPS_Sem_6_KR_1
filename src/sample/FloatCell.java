@@ -46,22 +46,39 @@ public class FloatCell extends TableCell<bill,Number> { // наследуем т
 
         @Override
         public void cancelEdit() { // отмена редактирования
-                super.cancelEdit();
-                int index = billList.indexOf(myBill); // узнаем индекс
-                float newCost = Float.parseFloat(number.getText()); // переводим число в Float
-                bill newExpense = new bill(myBill.getFIO(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), myBill.lessons_3.getValue(),myBill.lessons_4.getValue(),myBill.lessons_5.getValue(),myBill.lessons_6.getValue()); // подгружаем таблицу
-                switch (nameLessons){
-                        case  ("lessons_1"): newExpense = new bill(myBill.getFIO(), newCost, myBill.lessons_2.getValue(), myBill.lessons_3.getValue(),myBill.lessons_4.getValue(),myBill.lessons_5.getValue(),myBill.lessons_6.getValue());break; // подгружаем таблицу
-                        case  ("lessons_2"): newExpense = new bill(myBill.getFIO(), myBill.lessons_1.getValue(), newCost, myBill.lessons_3.getValue(),myBill.lessons_4.getValue(),myBill.lessons_5.getValue(),myBill.lessons_6.getValue());break; // подгружаем таблицу
-                        case  ("lessons_3"): newExpense = new bill(myBill.getFIO(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), newCost,myBill.lessons_4.getValue(),myBill.lessons_5.getValue(),myBill.lessons_6.getValue());break; // подгружаем таблицу
-                        case  ("lessons_4"): newExpense = new bill(myBill.getFIO(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), myBill.lessons_3.getValue(),newCost,myBill.lessons_5.getValue(),myBill.lessons_6.getValue());break; // подгружаем таблицу
-                        case  ("lessons_5"): newExpense = new bill(myBill.getFIO(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), myBill.lessons_3.getValue(),myBill.lessons_4.getValue(),newCost,myBill.lessons_6.getValue());break; // подгружаем таблицу
-                        case  ("lessons_6"): newExpense = new bill(myBill.getFIO(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), myBill.lessons_3.getValue(),myBill.lessons_4.getValue(),myBill.lessons_5.getValue(),newCost);break; // подгружаем таблицу
-                        default: newExpense = new bill(myBill.getFIO(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), myBill.lessons_3.getValue(),myBill.lessons_4.getValue(),myBill.lessons_5.getValue(),myBill.lessons_6.getValue());break; // подгружаем таблицу
+                try {
+                        super.cancelEdit();
+                        int index = billList.indexOf(myBill); // узнаем индекс
+                        float newCost = Float.parseFloat(number.getText()); // переводим число в Float
+                        bill newExpense = new bill(myBill.getFIO(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), myBill.lessons_3.getValue(), myBill.lessons_4.getValue(), myBill.lessons_5.getValue(), myBill.lessons_6.getValue()); // подгружаем таблицу
+                        switch (nameLessons) {
+                                case ("lessons_1"):
+                                        newExpense = new bill(myBill.getFIO(), newCost, myBill.lessons_2.getValue(), myBill.lessons_3.getValue(), myBill.lessons_4.getValue(), myBill.lessons_5.getValue(), myBill.lessons_6.getValue());
+                                        break; // подгружаем таблицу
+                                case ("lessons_2"):
+                                        newExpense = new bill(myBill.getFIO(), myBill.lessons_1.getValue(), newCost, myBill.lessons_3.getValue(), myBill.lessons_4.getValue(), myBill.lessons_5.getValue(), myBill.lessons_6.getValue());
+                                        break; // подгружаем таблицу
+                                case ("lessons_3"):
+                                        newExpense = new bill(myBill.getFIO(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), newCost, myBill.lessons_4.getValue(), myBill.lessons_5.getValue(), myBill.lessons_6.getValue());
+                                        break; // подгружаем таблицу
+                                case ("lessons_4"):
+                                        newExpense = new bill(myBill.getFIO(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), myBill.lessons_3.getValue(), newCost, myBill.lessons_5.getValue(), myBill.lessons_6.getValue());
+                                        break; // подгружаем таблицу
+                                case ("lessons_5"):
+                                        newExpense = new bill(myBill.getFIO(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), myBill.lessons_3.getValue(), myBill.lessons_4.getValue(), newCost, myBill.lessons_6.getValue());
+                                        break; // подгружаем таблицу
+                                case ("lessons_6"):
+                                        newExpense = new bill(myBill.getFIO(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), myBill.lessons_3.getValue(), myBill.lessons_4.getValue(), myBill.lessons_5.getValue(), newCost);
+                                        break; // подгружаем таблицу
+                                default:
+                                        newExpense = new bill(myBill.getFIO(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), myBill.lessons_3.getValue(), myBill.lessons_4.getValue(), myBill.lessons_5.getValue(), myBill.lessons_6.getValue());
+                                        break; // подгружаем таблицу
+                        }
+                        billList.set(index, newExpense); // меняем значение
+                        setGraphic(null); //не отображаем число
+                }catch (Exception e){
+                        System.out.println(e);
                 }
-                billList.set(index, newExpense); // меняем значение
-                setGraphic(null); //не отображаем число
-
                 //---------------------------------------------------------------------------------------------- sorted ------------------------------------------
                 List<Float> ballList = new ArrayList<Float>(); // список баллов
                 for (bill b: billList){

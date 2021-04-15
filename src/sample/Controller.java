@@ -15,7 +15,10 @@ import javafx.util.Callback;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 public class Controller {
 
@@ -37,7 +40,9 @@ public class Controller {
 
     // ----------------------------------------- пустая инициализация (если пользователь ничего не передал)----------------------
     public void init() {
-        this.testInit();
+        //this.testInit();
+        groupColumn.setValue("101");
+        this.loadBill();
         this.init(billList);
     }
 
@@ -52,33 +57,72 @@ public class Controller {
         //ObservableValue<Number> x; // данная строчка не имеет смысла, но может пригодится если переделать на возвращаемую функцию. Но у нас void =D
     }
 
+    // ----------------------------------------- тестовая инициализация---------------------------------------------------------------
+    public void loadBill() {
+        String group = (String) groupColumn.getValue();
+        File file = new File(group);
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        try {
+            JAXBContext context = JAXBContext.newInstance(bill.class);
+            Unmarshaller um = context.createUnmarshaller();
+
+            billList.clear();
+
+            // Обёртываем наши данные об адресатах.
+            int i=1;
+            while (file.exists()){
+                file = new File(group+"/"+i+".xml");
+                if(file.exists()){
+                    //InputStream inStream = new FileInputStream( file );
+                bill wrapper = (bill) um.unmarshal(file);
+                billList.addAll(wrapper);// Чтение XML из файла и демаршализация.
+                }
+                i++;
+            }
+        } catch (Exception e) { // catches ANY exception
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Could not load data");
+            alert.setContentText("Could not load data from file:\n" + file.getPath());
+
+            alert.showAndWait();
+        }
+    }
+
     // ----------------------------------------------------------------------- инициализация ---------------------------------------
     public void init (ObservableList<bill> billList){
+        ObservableList<String> groupName = FXCollections.observableArrayList("101", "103", "105","107","109");
+        // подгрузка ComboBox, для изменения данных
+        //groupColumn.setCellFactory(groupName);
+        groupColumn.setItems(groupName);
+        groupColumn.setValue("101"); // устанавливаем выбранный элемент по умолчанию
+
+        // получаем выбранный элемент
+        groupColumn.setOnAction(event -> this.loadBill());
+
         table.setItems(billList) ;
         table.setEditable(true);
 
+        // -------------------------------------------------------------------- имя
         // добавление строки в столбик (имя)
         nameColumn.setCellValueFactory(cellData ->
                 cellData.getValue().nameProperty());
 
+        // запрос на изменение данных
         nameColumn.setCellFactory(TextFieldTableCell.<bill> forTableColumn());
 
-        // добавление строки в столбик (предмет 1)
-        lessons_1.setCellValueFactory(cellData -> cellData.getValue().Lessons_1());
-        // добавление строки в столбик (предмет 2)
-        lessons_2.setCellValueFactory(cellData -> cellData.getValue().Lessons_2());
-        // добавление строки в столбик (предмет 3)
-        lessons_3.setCellValueFactory(cellData -> cellData.getValue().Lessons_3());
-        // добавление строки в столбик (предмет 4)
-        lessons_4.setCellValueFactory(cellData -> cellData.getValue().Lessons_4());
-        // добавление строки в столбик (предмет 5)
-        lessons_5.setCellValueFactory(cellData -> cellData.getValue().Lessons_5());
-        // добавление строки в столбик (предмет 6)
-        lessons_6.setCellValueFactory(cellData -> cellData.getValue().Lessons_6());
-        // добавление строки в столбик (предмет 6)
-        ball.setCellValueFactory(cellData -> cellData.getValue().getBall());
-        // добавление строки в столбик (предмет 6)
-        rating.setCellValueFactory(cellData -> cellData.getValue().getRating());
+        // -------------------------------------------------------------------- занятия
+        // добавление строк
+        lessons_1.setCellValueFactory(cellData -> cellData.getValue().Lessons_1());// добавление строки в столбик (предмет 1)
+        lessons_2.setCellValueFactory(cellData -> cellData.getValue().Lessons_2());// добавление строки в столбик (предмет 2)
+        lessons_3.setCellValueFactory(cellData -> cellData.getValue().Lessons_3());// добавление строки в столбик (предмет 3)
+        lessons_4.setCellValueFactory(cellData -> cellData.getValue().Lessons_4());// добавление строки в столбик (предмет 4)
+        lessons_5.setCellValueFactory(cellData -> cellData.getValue().Lessons_5());// добавление строки в столбик (предмет 5)
+        lessons_6.setCellValueFactory(cellData -> cellData.getValue().Lessons_6());// добавление строки в столбик (предмет 6)
+        ball.setCellValueFactory(cellData -> cellData.getValue().getBall());// добавление строки в столбик (предмет 6)
+        rating.setCellValueFactory(cellData -> cellData.getValue().getRating());// добавление строки в столбик (предмет 6)
 
         // запрос на изменение данных
         lessons_1.setCellFactory(cellData -> new FloatCell (billList, cellData.getId()));
@@ -88,50 +132,45 @@ public class Controller {
         lessons_5.setCellFactory(cellData -> new FloatCell (billList, cellData.getId()));
         lessons_6.setCellFactory(cellData -> new FloatCell (billList, cellData.getId()));
 
-        // подсчёт затрат
+        //-------------------------------------------------------------------- подсчёт и сохранение
         table.setOnMouseClicked(event -> {
             try {
-                itogoUpdate();
+                saveBill(); // вызывает метод сохранения
             } catch (Exception e) {
-                e.printStackTrace();
+                e.printStackTrace(); // обработка ошибок
             }
         });
     }
 
-    /**
-     * Сохраняет текущую информацию об адресатах в указанном файле.
-     *
-     * @param(file)
-     */
-    //--------------------------------------обновление результата! \(＾∀＾)/--------------------------------------------
-    private void itogoUpdate() throws Exception{
-        File file = new File("101.xml");
-        //try {
-            JAXBContext context = JAXBContext.newInstance(bill.class);
-            Marshaller marshaller = context.createMarshaller();
+    //--------------------------------------Сохраняет текущую информацию об адресатах в указанном файле.--------------------------------------------
+    private void saveBill() throws Exception{
 
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        // настройка пути к файлу
+        String group = (String) groupColumn.getValue();
+        File file = new File(group);
+        if (!file.exists()) {file.mkdir();} // если нету папки, то создать!
+
+        //обработка сохранения
+        try {
+            JAXBContext context = JAXBContext.newInstance(bill.class); // какой тип данных будем сохранять
+            Marshaller marshaller = context.createMarshaller(); // подготовка к расписанию данных
+
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true); // для того, что бы не было в одну строчку
 
             // Обёртываем наши данные об адресатах.
-            bill wrapper = new bill ( "Иванов Иван Иванович", new Float(0),new Float(0),new Float(0),new Float(0),new Float(0),new Float(0));
-            //wrapper.setPersons(personData);
-
-            // Маршаллируем и сохраняем XML в файл.
-            marshaller.marshal(wrapper, file);
-            //marshaller.marshal(wrapper, System.out);
-
-            // Сохраняем путь к файлу в реестре.
-            //setPersonFilePath(file);
-        /*
+            int i=1;
+            for (bill b:billList){ // пока есть данные типа bill
+                file = new File(group+"/"+i+".xml"); // указываем путь к файлу
+                file.createNewFile(); // при необходимости создаём новый
+                marshaller.marshal(b, file); // Маршаллируем и сохраняем XML в файл.
+                i++;
+            }
         } catch (Exception e) { // catches ANY exception
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Could not save data");
-            alert.setContentText("Could not save data to file:\n" + file.getPath());
 
             alert.showAndWait();
         }
-
-         */
     }
 }

@@ -23,12 +23,15 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
 
@@ -48,12 +51,18 @@ public class Controller {
     @FXML TableColumn<bill, Number> rating;
     @FXML ComboBox groupColumn;
 
-    String group = "group/"+groupColumn.getValue(); // путь для группы
+    String group;
+    Group groupsName = new Group();
 
     // ----------------------------------------- пустая инициализация (если пользователь ничего не передал)----------------------
     public void init() {
+        //ObservableList<String> groupName = FXCollections.observableArrayList("101", "103", "105","107","109");
+        //groupsName.setGroup(groupName);
+        //groupName.setGroup(new Group());
+        //groupColumn.setItems(groupsName.getGroup());
         //this.testInit();
         groupColumn.setValue("101");
+        group = "group/"+groupColumn.getValue(); // путь для группы
         this.loadBill();
         this.init(billList);
     }
@@ -73,11 +82,19 @@ public class Controller {
 
     // ----------------------------------------- тестовая инициализация---------------------------------------------------------------
     public void loadBill() {
-        File file = new File(group);
-        if (!file.exists()) {file.mkdir();}
         try {
-            JAXBContext context = JAXBContext.newInstance(bill.class);
+            File file = new File("nameGroup.xml");
+            JAXBContext context = JAXBContext.newInstance(Group.class);
             Unmarshaller um = context.createUnmarshaller();
+            groupsName = (Group) um.unmarshal(file);
+            groupColumn.setItems(groupsName.getGroup());
+
+            group = "group/"+groupColumn.getValue(); // путь для группы
+            file = new File(group);
+            if (!file.exists()) {file.mkdir();}
+
+            context = JAXBContext.newInstance(bill.class);
+            um = context.createUnmarshaller();
 
             billList.clear();
 
@@ -96,7 +113,7 @@ public class Controller {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Could not load data");
-            alert.setContentText("Could not load data from file:\n" + file.getPath());
+            //alert.setContentText("Could not load data from file:\n" + file.getPath());
 
             alert.showAndWait();
         }
@@ -104,9 +121,9 @@ public class Controller {
 
     // ----------------------------------------------------------------------- инициализация ---------------------------------------
     public void init (ObservableList<bill> billList){
-        ObservableList<String> groupName = FXCollections.observableArrayList("101", "103", "105","107","109");
+        //ObservableList<String> groupName = FXCollections.observableArrayList("101", "103", "105","107","109");
         // подгрузка ComboBox, для изменения данных
-        groupColumn.setItems(groupName);
+        //groupColumn.setItems(groupName);
         groupColumn.setValue("101"); // устанавливаем выбранный элемент по умолчанию
 
         // получаем выбранный элемент
@@ -154,7 +171,6 @@ public class Controller {
 
     //--------------------------------------Сохраняет текущую информацию об адресатах в указанном файле.--------------------------------------------
     private void saveBill() throws Exception{
-
         // настройка пути к файлу
         File file = new File(group);
         if (!file.exists()) {file.mkdir();} // если нету папки, то создать!
@@ -174,6 +190,13 @@ public class Controller {
                 marshaller.marshal(b, file); // Маршаллируем и сохраняем XML в файл.
                 i++;
             }
+
+            file = new File("nameGroup.xml");
+            context = JAXBContext.newInstance(Group.class); // какой тип данных будем сохранять
+            marshaller = context.createMarshaller(); // подготовка к расписанию данных
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true); // для того, что бы не было в одну строчку
+            marshaller.marshal(groupsName, file); // Маршаллируем и сохраняем XML в файл.
+
         } catch (Exception e) { // catches ANY exception
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -226,7 +249,7 @@ public class Controller {
         Scene scene = new Scene(page) ; // создание сцены
         dialogStage.setScene(scene);
 
-        addFieldController addF = loader.getController(); // контроллер
+        addColumnController addF = loader.getController(); // контроллер
         addF.init(billList); // отправка данных этой формы, на новую
         dialogStage.showAndWait();
     }

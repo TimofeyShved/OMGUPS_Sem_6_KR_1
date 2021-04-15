@@ -21,7 +21,7 @@ public class Main extends Application {
         controller.init(); // запускаем в контроллере метод init
 
         primaryStage.setTitle("Журнал преподавателя"); // заголовок формы
-        primaryStage.setScene(new Scene(root, 1050, 400)); // размеры формы и наша панель, в форму(окно)
+        primaryStage.setScene(new Scene(root, 1150, 400)); // размеры формы и наша панель, в форму(окно)
         primaryStage.show(); // показать форму
     }
 

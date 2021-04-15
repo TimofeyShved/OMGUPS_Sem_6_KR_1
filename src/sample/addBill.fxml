@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+
+
+<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="382.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.addFieldController">
+   <children>
+      <Label text="ФИО  " />
+      <TextField fx:id="addName" prefHeight="26.0" prefWidth="210.0" />
+      <Button onMouseClicked="#addField" mnemonicParsing="false" text="Добавить" />
+   </children>
+</HBox>

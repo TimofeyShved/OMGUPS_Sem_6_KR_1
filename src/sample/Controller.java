@@ -7,9 +7,16 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import javax.xml.bind.JAXBContext;
@@ -18,7 +25,10 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Controller {
 
@@ -38,6 +48,8 @@ public class Controller {
     @FXML TableColumn<bill, Number> rating;
     @FXML ComboBox groupColumn;
 
+    String group = "group/"+groupColumn.getValue(); // путь для группы
+
     // ----------------------------------------- пустая инициализация (если пользователь ничего не передал)----------------------
     public void init() {
         //this.testInit();
@@ -47,6 +59,7 @@ public class Controller {
     }
 
     // ----------------------------------------- тестовая инициализация---------------------------------------------------------------
+    /*
     public void testInit() {
         billList.add(new bill ( "Иванов Иван Иванович", new Float(0),new Float(0),new Float(0),new Float(0),new Float(0),new Float(0)));
         billList.add(new bill ( "Иванов Сергей Иванович", new Float(0),new Float(0),new Float(0),new Float(0),new Float(0),new Float(0)));
@@ -56,14 +69,12 @@ public class Controller {
         billList.add(new bill ( "Сидоров Александр Иванович", new Float(0),new Float(0),new Float(0),new Float(0),new Float(0),new Float(0)));
         //ObservableValue<Number> x; // данная строчка не имеет смысла, но может пригодится если переделать на возвращаемую функцию. Но у нас void =D
     }
+     */
 
     // ----------------------------------------- тестовая инициализация---------------------------------------------------------------
     public void loadBill() {
-        String group = (String) groupColumn.getValue();
         File file = new File(group);
-        if (!file.exists()) {
-            file.mkdir();
-        }
+        if (!file.exists()) {file.mkdir();}
         try {
             JAXBContext context = JAXBContext.newInstance(bill.class);
             Unmarshaller um = context.createUnmarshaller();
@@ -95,7 +106,6 @@ public class Controller {
     public void init (ObservableList<bill> billList){
         ObservableList<String> groupName = FXCollections.observableArrayList("101", "103", "105","107","109");
         // подгрузка ComboBox, для изменения данных
-        //groupColumn.setCellFactory(groupName);
         groupColumn.setItems(groupName);
         groupColumn.setValue("101"); // устанавливаем выбранный элемент по умолчанию
 
@@ -146,7 +156,6 @@ public class Controller {
     private void saveBill() throws Exception{
 
         // настройка пути к файлу
-        String group = (String) groupColumn.getValue();
         File file = new File(group);
         if (!file.exists()) {file.mkdir();} // если нету папки, то создать!
 
@@ -172,5 +181,57 @@ public class Controller {
 
             alert.showAndWait();
         }
+    }
+
+    //---------------------------------------------------------------------- добавляем новую строку --------------------------------------------
+    static Stage dialogStage;
+    public void addField(MouseEvent event) throws Exception {
+        FXMLLoader loader = new FXMLLoader(); // создаем загрузку FXML
+        loader.setLocation(getClass().getResource("addBill.fxml")); // добавляем нашу FXML
+
+        Pane page = loader.load(); // создание панели
+        dialogStage = new Stage();
+        dialogStage.initModality( Modality.WINDOW_MODAL); // блокировка предыдущей формы, при открытии новой
+
+        Scene scene = new Scene(page) ; // создание сцены
+        dialogStage.setScene(scene);
+
+        addFieldController addF = loader.getController(); // контроллер
+        addF.init(billList); // отправка данных этой формы, на новую
+        dialogStage.showAndWait();
+    }
+
+    //---------------------------------------------------------------------- Удаляем строку --------------------------------------------
+    public void deleteField(MouseEvent event) throws Exception {
+        int editingIndex = table.getSelectionModel().getFocusedIndex();
+        billList.remove(editingIndex);
+
+        File file = new File(group+"/"+editingIndex+".xml");
+        if (file.exists()) {
+            Files.delete(Paths.get(group+"/"+(billList.size()+1)+".xml"));
+        }
+
+        this.saveBill();
+    }
+
+    //---------------------------------------------------------------------- добавляем новую группу --------------------------------------------
+    public void addColumn(MouseEvent event) throws Exception {
+        FXMLLoader loader = new FXMLLoader(); // создаем загрузку FXML
+        loader.setLocation(getClass().getResource("addColumn.fxml")); // добавляем нашу FXML
+
+        Pane page = loader.load(); // создание панели
+        dialogStage = new Stage();
+        dialogStage.initModality( Modality.WINDOW_MODAL); // блокировка предыдущей формы, при открытии новой
+
+        Scene scene = new Scene(page) ; // создание сцены
+        dialogStage.setScene(scene);
+
+        addFieldController addF = loader.getController(); // контроллер
+        addF.init(billList); // отправка данных этой формы, на новую
+        dialogStage.showAndWait();
+    }
+
+    //---------------------------------------------------------------------- Удаляем группу --------------------------------------------
+    public void deleteColumn(MouseEvent event) {
     }
 }

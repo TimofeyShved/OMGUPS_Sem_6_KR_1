@@ -7,12 +7,7 @@ import javafx.beans.property.StringProperty;
 
 import javax.xml.bind.annotation.*;
 
-/**
- * Вспомогательный класс для обёртывания списка адресатов.
- * Используется для сохранения списка адресатов в XML.
- *
- * @author Marco Jakob
- */
+// Используется для сохранения списка адресатов в XML.
 @XmlRootElement(name = "bills")
 @XmlAccessorType(XmlAccessType.PROPERTY)
 @XmlType(name = "bills", propOrder = {
@@ -62,6 +57,10 @@ public class bill {
                 (lessons_1+lessons_2+lessons_3+lessons_4+lessons_5+lessons_6)/6
         );
         this.rating  = new SimpleFloatProperty(0); // добавить предмет в класс
+    }
+
+    public bill(String text) {
+        this.FIO = new SimpleStringProperty(text); // добавить имя в класс
     }
 
     // --------------------------------------------------------------------------------- обработка событый -------------------------------------------------------

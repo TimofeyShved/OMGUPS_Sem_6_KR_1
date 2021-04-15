@@ -50,6 +50,7 @@ public class FloatCell extends TableCell<bill,Number> { // наследуем т
                         super.cancelEdit();
                         int index = billList.indexOf(myBill); // узнаем индекс
                         float newCost = Float.parseFloat(number.getText()); // переводим число в Float
+
                         bill newExpense = new bill(myBill.getFIO(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), myBill.lessons_3.getValue(), myBill.lessons_4.getValue(), myBill.lessons_5.getValue(), myBill.lessons_6.getValue()); // подгружаем таблицу
                         switch (nameLessons) {
                                 case ("lessons_1"):
@@ -74,23 +75,29 @@ public class FloatCell extends TableCell<bill,Number> { // наследуем т
                                         newExpense = new bill(myBill.getFIO(), myBill.lessons_1.getValue(), myBill.lessons_2.getValue(), myBill.lessons_3.getValue(), myBill.lessons_4.getValue(), myBill.lessons_5.getValue(), myBill.lessons_6.getValue());
                                         break; // подгружаем таблицу
                         }
+
                         billList.set(index, newExpense); // меняем значение
                         setGraphic(null); //не отображаем число
+
                 }catch (Exception e){
                         System.out.println(e);
                 }
+
                 //---------------------------------------------------------------------------------------------- sorted ------------------------------------------
                 List<Float> ballList = new ArrayList<Float>(); // список баллов
                 for (bill b: billList){
                         ballList.add(b.getBall().getValue());
                 }
-                //Collections.sort(ballList, Collections.reverseOrder());
-                this.sort(ballList);
-                for (int j = 0; j < billList.size(); j++){
+
+                // сортировка
+                //Collections.sort(ballList, Collections.reverseOrder()); // программная сортировка коллекций
+                this.sort(ballList); // наша сортировка
+
+                for (int j = 0; j < billList.size(); j++){ // установка значений рейтинга
                         for(int i = 0; i < ballList.size(); i++){
                                 float f1=ballList.get(i);
                                 float f2=billList.get(j).getBall().getValue();
-                                if(f1==f2){
+                                if(f1==f2){ // если совпали баллы, то записать рейтинг в нашу коллекцию
                                         bill b = billList.get(j);
                                         b.setRating(i+1);
                                         billList.set(j, b);
@@ -99,18 +106,18 @@ public class FloatCell extends TableCell<bill,Number> { // наследуем т
                 }
         }
 
-        public static List<Float> sort(List<Float> array) {
+        public static List<Float> sort(List<Float> array) { // сортировка
                 for (int i = 0; i < array.size(); i++) {
                         for (int j = 0; j < array.size(); j++) {
-                                if (array.get(j) < array.get(i)) {
+                                if (array.get(j) < array.get(i)) { // сравниваем два рядом стоящих значения
                                         float aj = array.get(j);
                                         float ai = array.get(i);
-                                        array.set(j, ai);
+                                        array.set(j, ai);       // меняем местами
                                         array.set(i, aj);
                                 }
                         }
                 }
-                return array;
+                return array; // возвращаем коллекцию
         }
 
         @Override
@@ -120,7 +127,7 @@ public class FloatCell extends TableCell<bill,Number> { // наследуем т
                         setText(null); // пустое поле
                         setGraphic(null); ;
                 } else
-                if(isEditing()) // редаткируем?
+                if(isEditing()) // редаткируем? в(°ロ°)д
                 setGraphic(number); //отображаем число
                 else {
                         setText(getItem().toString()) ;

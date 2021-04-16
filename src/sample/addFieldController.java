@@ -13,6 +13,7 @@ public class addFieldController {
 
     public void addField(MouseEvent event) {
         billList.add(new bill(addName.getText()));
+        addName.setText("");
     }
 
     public void init(ObservableList<bill> billList) {

@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 
 import javax.xml.bind.JAXBContext;
@@ -56,8 +58,8 @@ public class Controller {
 
     // ----------------------------------------- пустая инициализация (если пользователь ничего не передал)----------------------
     public void init() {
-        //ObservableList<String> groupName = FXCollections.observableArrayList("101", "103", "105","107","109");
-        //groupsName.setGroup(groupName);
+        //ObservableList<String> groupName1 = FXCollections.observableArrayList("101", "103", "105","107","109");
+        //groupsName.setGroup(groupName1);
         //groupName.setGroup(new Group());
         //groupColumn.setItems(groupsName.getGroup());
         //this.testInit();
@@ -127,7 +129,14 @@ public class Controller {
         groupColumn.setValue("101"); // устанавливаем выбранный элемент по умолчанию
 
         // получаем выбранный элемент
-        groupColumn.setOnAction(event -> this.loadBill());
+        groupColumn.setOnAction(event -> {
+            try {
+                this.saveBill();
+                this.loadBill();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
         table.setItems(billList) ;
         table.setEditable(true);
@@ -170,7 +179,7 @@ public class Controller {
     }
 
     //--------------------------------------Сохраняет текущую информацию об адресатах в указанном файле.--------------------------------------------
-    private void saveBill() throws Exception{
+    public void saveBill() throws Exception{
         // настройка пути к файлу
         File file = new File(group);
         if (!file.exists()) {file.mkdir();} // если нету папки, то создать!
@@ -221,6 +230,7 @@ public class Controller {
 
         addFieldController addF = loader.getController(); // контроллер
         addF.init(billList); // отправка данных этой формы, на новую
+        dialogStage.setTitle("Добавить ученика");
         dialogStage.showAndWait();
     }
 
@@ -250,11 +260,36 @@ public class Controller {
         dialogStage.setScene(scene);
 
         addColumnController addF = loader.getController(); // контроллер
-        addF.init(billList); // отправка данных этой формы, на новую
+        addF.init(groupsName); // отправка данных этой формы, на новую
+        dialogStage.setTitle("Добавить группу");
         dialogStage.showAndWait();
     }
 
     //---------------------------------------------------------------------- Удаляем группу --------------------------------------------
-    public void deleteColumn(MouseEvent event) {
+    public void deleteColumn(MouseEvent event) throws Exception {
+        String del = ""+groupColumn.getValue(); // узнаём имя выбранной группы
+
+        ObservableList<String> list = groupsName.getGroup(); // выгружаем группы
+        for (int i=0;i<list.size();i++) {
+            if (list.get(i).equals(del)) {list.remove(i);} // находим нашу, по циклу и удаляем
+        }
+        groupsName.setGroup(list); // загружаем группы, обратно
+
+        File file = new File("group/"+del); // удаляем файлы с данной группой
+        this.deleteDir(file); // вызываем метод удаления
+
+        groupColumn.setValue(null);
+    }
+
+    void deleteDir(File file) { // метод удаления
+        File[] contents = file.listFiles(); // узнаём содержимое
+        if (contents != null) { // если оно не равно нулю
+            for (File f : contents) { // то проходимся по ним
+                if (! Files.isSymbolicLink(f.toPath())) {
+                    deleteDir(f); // и запускаем рекурсию, на удалнеие
+                }
+            }
+        }
+        file.delete(); // удаление файла или папки
     }
 }

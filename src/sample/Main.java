@@ -23,6 +23,14 @@ public class Main extends Application {
         primaryStage.setTitle("Журнал преподавателя"); // заголовок формы
         primaryStage.setScene(new Scene(root, 1150, 400)); // размеры формы и наша панель, в форму(окно)
         primaryStage.show(); // показать форму
+
+        primaryStage.setOnCloseRequest(event -> {
+            try {
+                controller.saveBill();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 

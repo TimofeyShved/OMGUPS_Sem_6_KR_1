@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <bills>
     <FIO>Иванов Александр Иванович</FIO>
-    <ball>0.0</ball>
-    <lessons_1>0.0</lessons_1>
-    <lessons_2>0.0</lessons_2>
-    <lessons_3>0.0</lessons_3>
-    <lessons_4>0.0</lessons_4>
-    <lessons_5>0.0</lessons_5>
-    <lessons_6>0.0</lessons_6>
+    <lessons_1>44.0</lessons_1>
+    <lessons_2>33.0</lessons_2>
+    <lessons_3>44.0</lessons_3>
+    <lessons_4>78.0</lessons_4>
+    <lessons_5>45.0</lessons_5>
+    <lessons_6>49.0</lessons_6>
+    <ball>48.833332</ball>
     <rating>6.0</rating>
 </bills>

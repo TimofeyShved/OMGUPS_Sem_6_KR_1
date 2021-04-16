@@ -84,25 +84,29 @@ public class FloatCell extends TableCell<bill,Number> { // наследуем т
                 }
 
                 //---------------------------------------------------------------------------------------------- sorted ------------------------------------------
-                List<Float> ballList = new ArrayList<Float>(); // список баллов
-                for (bill b: billList){
-                        ballList.add(b.getBall().getValue());
-                }
+                try {
+                        List<Float> ballList = new ArrayList<Float>(); // список баллов
+                        for (bill b: billList){
+                                ballList.add(b.getBall().getValue());
+                        }
 
-                // сортировка
-                //Collections.sort(ballList, Collections.reverseOrder()); // программная сортировка коллекций
-                this.sort(ballList); // наша сортировка
+                        // сортировка
+                        //Collections.sort(ballList, Collections.reverseOrder()); // программная сортировка коллекций
+                        this.sort(ballList); // наша сортировка
 
-                for (int j = 0; j < billList.size(); j++){ // установка значений рейтинга
-                        for(int i = 0; i < ballList.size(); i++){
-                                float f1=ballList.get(i);
-                                float f2=billList.get(j).getBall().getValue();
-                                if(f1==f2){ // если совпали баллы, то записать рейтинг в нашу коллекцию
-                                        bill b = billList.get(j);
-                                        b.setRating(i+1);
-                                        billList.set(j, b);
+                        for (int j = 0; j < billList.size(); j++){ // установка значений рейтинга
+                                for(int i = 0; i < ballList.size(); i++){
+                                        float f1=ballList.get(i);
+                                        float f2=billList.get(j).getBall().getValue();
+                                        if(f1==f2){ // если совпали баллы, то записать рейтинг в нашу коллекцию
+                                                bill b = billList.get(j);
+                                                b.setRating(i+1);
+                                                billList.set(j, b);
+                                        }
                                 }
                         }
+                }catch (Exception e){
+                        System.out.println(e);
                 }
         }
 

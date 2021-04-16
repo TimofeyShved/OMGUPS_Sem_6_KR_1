@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <bills>
     <FIO>Сидоров Сергей Иванович</FIO>
-    <ball>0.0</ball>
     <lessons_1>0.0</lessons_1>
     <lessons_2>0.0</lessons_2>
     <lessons_3>0.0</lessons_3>
     <lessons_4>0.0</lessons_4>
     <lessons_5>0.0</lessons_5>
     <lessons_6>0.0</lessons_6>
+    <ball>0.0</ball>
     <rating>6.0</rating>
 </bills>

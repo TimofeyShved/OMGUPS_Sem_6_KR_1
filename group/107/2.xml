@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <bills>
     <FIO>Иванов Сергей Иванович</FIO>
-    <ball>0.0</ball>
-    <lessons_1>0.0</lessons_1>
-    <lessons_2>0.0</lessons_2>
-    <lessons_3>0.0</lessons_3>
-    <lessons_4>0.0</lessons_4>
-    <lessons_5>0.0</lessons_5>
-    <lessons_6>0.0</lessons_6>
-    <rating>6.0</rating>
+    <lessons_1>66.0</lessons_1>
+    <lessons_2>66.0</lessons_2>
+    <lessons_3>55.0</lessons_3>
+    <lessons_4>77.0</lessons_4>
+    <lessons_5>23.0</lessons_5>
+    <lessons_6>77.0</lessons_6>
+    <ball>60.666668</ball>
+    <rating>2.0</rating>
 </bills>

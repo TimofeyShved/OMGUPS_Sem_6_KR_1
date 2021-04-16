@@ -19,16 +19,16 @@ import javax.xml.bind.annotation.*;
 })
 public class Group {
 
-    private ObservableList<String> group = FXCollections.observableArrayList();
+    private ObservableList<String> group = FXCollections.observableArrayList(); // коллекция названий наших групп
 
     //@XmlElement(name = "group")
-    public ObservableList<String> getGroup() {
+    public ObservableList<String> getGroup() { // вернуть
         return group;
     }
-    public void setGroup(ObservableList<String> group) {
+    public void setGroup(ObservableList<String> group) { // получить
         this.group = group;
     }
-    public void setGroup(String ...group) {
+    public void setGroup(String ...group) { // получить в виде строчек
         ObservableList<String> myArray = null;
         for (String s:group){
             myArray.add(s);

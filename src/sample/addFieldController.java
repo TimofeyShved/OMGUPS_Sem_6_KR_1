@@ -11,9 +11,9 @@ public class addFieldController {
     ObservableList<bill> billList;
     @FXML TextField addName;
 
-    public void addField(MouseEvent event) {
-        billList.add(new bill(addName.getText()));
-        addName.setText("");
+    public void addField(MouseEvent event) { // добавление полей учеников
+        billList.add(new bill(addName.getText())); // добавляем в нашу коллекцию, данные из текстового поля
+        addName.setText(""); // очистить поле
     }
 
     public void init(ObservableList<bill> billList) {

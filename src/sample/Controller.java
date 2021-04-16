@@ -56,46 +56,29 @@ public class Controller {
     String group;
     Group groupsName = new Group();
 
-    // ----------------------------------------- пустая инициализация (если пользователь ничего не передал)----------------------
+    // ----------------------------------------- инициализация ----------------------
     public void init() {
-        //ObservableList<String> groupName1 = FXCollections.observableArrayList("101", "103", "105","107","109");
-        //groupsName.setGroup(groupName1);
-        //groupName.setGroup(new Group());
-        //groupColumn.setItems(groupsName.getGroup());
-        //this.testInit();
-        groupColumn.setValue("101");
+        groupColumn.setValue("101"); // начальное значение поля (по умолчанию)
         group = "group/"+groupColumn.getValue(); // путь для группы
-        this.loadBill();
-        this.init(billList);
+        this.loadBill(); //загрузка данных
+        this.init(billList); // инициализация данных (отображение)
     }
 
-    // ----------------------------------------- тестовая инициализация---------------------------------------------------------------
-    /*
-    public void testInit() {
-        billList.add(new bill ( "Иванов Иван Иванович", new Float(0),new Float(0),new Float(0),new Float(0),new Float(0),new Float(0)));
-        billList.add(new bill ( "Иванов Сергей Иванович", new Float(0),new Float(0),new Float(0),new Float(0),new Float(0),new Float(0)));
-        billList.add(new bill ( "Иванов Александр Иванович", new Float(0),new Float(0),new Float(0),new Float(0),new Float(0),new Float(0)));
-        billList.add(new bill ( "Сидоров Сергей Иванович", new Float(0),new Float(0),new Float(0),new Float(0),new Float(0),new Float(0)));
-        billList.add(new bill ( "Сидоров Иван Иванович", new Float(0),new Float(0),new Float(0),new Float(0),new Float(0),new Float(0)));
-        billList.add(new bill ( "Сидоров Александр Иванович", new Float(0),new Float(0),new Float(0),new Float(0),new Float(0),new Float(0)));
-        //ObservableValue<Number> x; // данная строчка не имеет смысла, но может пригодится если переделать на возвращаемую функцию. Но у нас void =D
-    }
-     */
 
-    // ----------------------------------------- тестовая инициализация---------------------------------------------------------------
+    // ------------------------------------------------------- загрузка данных ---------------------------------------------------------------
     public void loadBill() {
         try {
-            File file = new File("nameGroup.xml");
-            JAXBContext context = JAXBContext.newInstance(Group.class);
-            Unmarshaller um = context.createUnmarshaller();
-            groupsName = (Group) um.unmarshal(file);
+            File file = new File("nameGroup.xml"); // наш файл
+            JAXBContext context = JAXBContext.newInstance(Group.class); // переводим наши дынные, в вид JAXBContext
+            Unmarshaller um = context.createUnmarshaller(); //  переводим из xml в наш вид
+            groupsName = (Group) um.unmarshal(file);        // выбранный файл
             groupColumn.setItems(groupsName.getGroup());
 
             group = "group/"+groupColumn.getValue(); // путь для группы
             file = new File(group);
             if (!file.exists()) {file.mkdir();}
 
-            context = JAXBContext.newInstance(bill.class);
+            context = JAXBContext.newInstance(bill.class);  // переводим наши дынные, в вид JAXBContext
             um = context.createUnmarshaller();
 
             billList.clear();
@@ -111,28 +94,23 @@ public class Controller {
                 }
                 i++;
             }
-        } catch (Exception e) { // catches ANY exception
+        } catch (Exception e) { // окно с ошибкой
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Could not load data");
-            //alert.setContentText("Could not load data from file:\n" + file.getPath());
-
             alert.showAndWait();
         }
     }
 
-    // ----------------------------------------------------------------------- инициализация ---------------------------------------
+    // ----------------------------------------------------------------- инициализация данных (отображение)---------------------------------------
     public void init (ObservableList<bill> billList){
-        //ObservableList<String> groupName = FXCollections.observableArrayList("101", "103", "105","107","109");
-        // подгрузка ComboBox, для изменения данных
-        //groupColumn.setItems(groupName);
         groupColumn.setValue("101"); // устанавливаем выбранный элемент по умолчанию
 
         // получаем выбранный элемент
         groupColumn.setOnAction(event -> {
             try {
-                this.saveBill();
-                this.loadBill();
+                this.saveBill(); // сохранение
+                this.loadBill(); // загрузка
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -206,11 +184,10 @@ public class Controller {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true); // для того, что бы не было в одну строчку
             marshaller.marshal(groupsName, file); // Маршаллируем и сохраняем XML в файл.
 
-        } catch (Exception e) { // catches ANY exception
+        } catch (Exception e) { // окно с ошибкой
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Could not save data");
-
             alert.showAndWait();
         }
     }
@@ -236,15 +213,15 @@ public class Controller {
 
     //---------------------------------------------------------------------- Удаляем строку --------------------------------------------
     public void deleteField(MouseEvent event) throws Exception {
-        int editingIndex = table.getSelectionModel().getFocusedIndex();
-        billList.remove(editingIndex);
+        int editingIndex = table.getSelectionModel().getFocusedIndex(); // узнаём индекс
+        billList.remove(editingIndex); // удаляем
 
-        File file = new File(group+"/"+editingIndex+".xml");
+        File file = new File(group+"/"+editingIndex+".xml"); // находим файл
         if (file.exists()) {
-            Files.delete(Paths.get(group+"/"+(billList.size()+1)+".xml"));
+            Files.delete(Paths.get(group+"/"+(billList.size()+1)+".xml")); // удаляем
         }
 
-        this.saveBill();
+        this.saveBill(); // сохраняем
     }
 
     //---------------------------------------------------------------------- добавляем новую группу --------------------------------------------

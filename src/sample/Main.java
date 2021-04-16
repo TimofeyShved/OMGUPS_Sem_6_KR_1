@@ -24,7 +24,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 1150, 400)); // размеры формы и наша панель, в форму(окно)
         primaryStage.show(); // показать форму
 
-        primaryStage.setOnCloseRequest(event -> {
+        primaryStage.setOnCloseRequest(event -> { // сохранение, при закрытии формы
             try {
                 controller.saveBill();
             } catch (Exception e) {

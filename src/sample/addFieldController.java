@@ -12,8 +12,12 @@ public class addFieldController {
     @FXML TextField addName;
 
     public void addField(MouseEvent event) { // добавление полей учеников
-        billList.add(new bill(addName.getText())); // добавляем в нашу коллекцию, данные из текстового поля
-        addName.setText(""); // очистить поле
+        String s=addName.getText();
+        s = s.replaceAll("[^A-Za-zА-Яа-я0-9]", "");
+        if (!s.equals("")){
+            billList.add(new bill(s)); // добавляем в нашу коллекцию, данные из текстового поля
+            addName.setText(""); // очистить поле
+        }
     }
 
     public void init(ObservableList<bill> billList) {

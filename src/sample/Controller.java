@@ -58,6 +58,8 @@ public class Controller {
 
     // ----------------------------------------- инициализация ----------------------
     public void init() {
+        File file = new File("group"); // файл с таким именем
+        if (!file.exists()) {file.mkdir();} // если нету папки, то создать!
         groupColumn.setValue("101"); // начальное значение поля (по умолчанию)
         group = "group/"+groupColumn.getValue(); // путь для группы
         this.loadBill(); //загрузка данных
@@ -82,7 +84,6 @@ public class Controller {
             um = context.createUnmarshaller();
 
             billList.clear();
-
             // Обёртываем наши данные об адресатах.
             int i=1;
             while (file.exists()){
@@ -209,6 +210,7 @@ public class Controller {
         addF.init(billList); // отправка данных этой формы, на новую
         dialogStage.setTitle("Добавить ученика");
         dialogStage.showAndWait();
+        this.saveBill(); // сохраняем
     }
 
     //---------------------------------------------------------------------- Удаляем строку --------------------------------------------

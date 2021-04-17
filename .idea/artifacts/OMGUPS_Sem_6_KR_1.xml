@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="OMGUPS_Sem_6_KR_1">
+    <output-path>$PROJECT_DIR$/out/artifacts/OMGUPS_Sem_6_KR_1</output-path>
+    <root id="root">
+      <element id="archive" name="OMGUPS_Sem_6_KR_1.jar">
+        <element id="module-output" name="OMGUPS_Sem_6_KR_1" />
+      </element>
+    </root>
+  </artifact>
+</component>

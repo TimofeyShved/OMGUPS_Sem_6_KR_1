@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="out/artifacts/OMGUPS_Sem_6_KR_1_jar/OMGUPS_Sem_6_KR_1.jar"/>
+	<classpathentry kind="output" path="out/production/OMGUPS_Sem_6_KR_1"/>
+</classpath>

@@ -1,0 +1,33 @@
+
+
+Version:	3.13
+CmdLine:	C:\Users\Programmer\IdeaProjects\OMGUPS_Sem_6_KR_1\out\artifacts\OMGUPS_Sem_6_KR_1\OMGUPS_Sem_6_KR_1.exe --l4j-debug
+WOW64:		yes
+Working dir:	C:\Users\Programmer\IdeaProjects\OMGUPS_Sem_6_KR_1\out\artifacts\OMGUPS_Sem_6_KR_1\.
+Java min ver:	1.008.000_172
+Java max ver:	
+64-bit search:	SOFTWARE\JavaSoft\Java Runtime Environment...
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.8
+Ignore:		1.008.000
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.8.0_121
+Ignore:		1.008.000_121
+32-bit search:	SOFTWARE\JavaSoft\Java Runtime Environment...
+64-bit search:	SOFTWARE\JavaSoft\Java Development Kit...
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.8
+Ignore:		1.008.000
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.8.0_172
+Check launcher:	C:\Program Files\Java\jdk1.8.0_172\bin\javaw.exe (OK)
+Match:		1.008.000_172
+64-bit search:	SOFTWARE\JavaSoft\JRE...
+64-bit search:	SOFTWARE\JavaSoft\JDK...
+Check:		SOFTWARE\JavaSoft\JDK\15
+Check launcher:	C:\Program Files\Java\jdk-15.0.2\bin\javaw.exe (OK)
+Match:		1.015.000
+Check:		SOFTWARE\JavaSoft\JDK\15.0.2
+Check launcher:	C:\Program Files\Java\jdk-15.0.2\bin\javaw.exe (OK)
+Match:		1.015.000_002
+Runtime used:	1.015.000_002 (64-bit)
+Launcher:	C:\Program Files\Java\jdk-15.0.2\bin\javaw.exe
+Launcher args:	-jar "C:\Users\Programmer\IdeaProjects\OMGUPS_Sem_6_KR_1\out\artifacts\OMGUPS_Sem_6_KR_1\OMGUPS_Sem_6_KR_1.exe"
+Args length:	111/32768 chars
+Exit code:	0

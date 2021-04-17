@@ -12,10 +12,17 @@ public class addColumnController {
     @FXML TextField addName;
 
     public void addField(MouseEvent event) { // добавление названий групп
-        groups.getGroup().add(addName.getText()); // добавляем в нашу коллекцию, данные из текстового поля
-        File file = new File("group/"+addName.getText()); // файл с таким именем
-        if (!file.exists()) {file.mkdir();} // если нету папки, то создать!
-        addName.setText(""); // очистить поле
+        String s=addName.getText();
+        s = s.replaceAll("[^A-Za-zА-Яа-я0-9]", "");
+        for (String g:groups.getGroup()){
+            if(g.equals(s))s="";
+        }
+        if (!s.equals("")) {
+            groups.getGroup().add(s); // добавляем в нашу коллекцию, данные из текстового поля
+            File file = new File("group/"+s); // файл с таким именем
+            if (!file.exists()) {file.mkdir();} // если нету папки, то создать!
+            addName.setText(""); // очистить поле
+        }
     }
 
     public void init(Group groups) {
